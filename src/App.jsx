@@ -2,9 +2,22 @@ import { useState } from 'react'
 import { Menu, Categories} from "./Components"
 import items from "./Components/data"
 
+const allCategories =['All', ...new Set(items.map((item)=> item.category))]
+
 function App() {
   const [menuItems ,setMenuitems] = useState(items)
-  const [category,setCategory] = useState([])
+  const [categories,setCategories] = useState(allCategories)
+
+
+// function to filter "items" i.e useState contains filtered items
+  const filterItems = (category) => {
+    if(category=== 'All') {
+      setMenuitems(items)
+      return
+    }
+    const filtered = items.filter((item)=> item.category === category)
+    setMenuitems(filtered)
+  }
 
   return (
     <main>
@@ -13,7 +26,7 @@ function App() {
           <h2>Our Menu</h2>
           <div className='underline'/>
         </div>
-        <Categories/>
+        <Categories categories={categories} filterItems={filterItems} />
         <Menu items={menuItems}/>
       </section>
     </main>
